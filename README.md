@@ -1,0 +1,1 @@
+# tc39-proposal-dotstructuring
