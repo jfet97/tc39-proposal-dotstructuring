@@ -11,7 +11,7 @@ To access multiple properties from an object (sometimes referred to as "picking"
 ```js
 obj.{prop1, prop2};
 ```
-Why we need a destructuring-like construct instead of a a destructuring construct (_ObjectAssignmentPattern_)?
+Why we need a destructuring-like construct instead of a a destructuring construct (_ObjectAssignmentPattern_)?\
 Dotstructuring symbols is a particular case because in normal destructuring we cannot extract directly a Symbol, since it would not make any sense:
 ```js
 const {[Symbol.iterator]} = [];
