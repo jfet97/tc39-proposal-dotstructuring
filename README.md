@@ -173,6 +173,17 @@ source; // {prop1:42}
 target; // {p1:42}
 ```
 &nbsp;
+Renaming an existent property will not overwrite it:
+```js
+const source = {prop1:42};
+const target = {prop1:42};
+
+target.{prop1:p1} = source;
+
+source; // {prop1:42}
+target; // {p1:42, prop1:42}
+```
+&nbsp;
 ### extracting nested properties
 Dotstructuring syntax let us to extract nested properties like destructuring:
 ```js
