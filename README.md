@@ -38,14 +38,48 @@ newObject; // {prop1: 42,  [Symbol.iterator]: .. };
 obj; // {prop1: 42, prop2: 'foo', [Symbol.iterator]: .. };
 ```
 The source object remains unaffected.
-
+\
+&nbsp;
 ### undefined properties
-If a not existing property is picked the corrisponding value willbe undefined:
+If a not existing property is picked the corrisponding value will be undefined:
 ```js
 const obj = {prop1: 42};
 
 const newObject = obj.{prop2};
 newObject; // {prop2: undefined};
 
-obj; // {prop1: 42};;
+obj; // {prop1: 42};
 ```
+\
+&nbsp;
+### default values for properties
+Dotstructuring syntax let us to set default value for properties like destructuring:
+```js
+const obj = {prop1: 42};
+
+const newObject = obj.{prop2 = 'foo'};
+newObject; // {prop2: 'foo'};
+
+obj; // {prop1: 42};
+```
+### renaming properties
+Dotstructuring syntax let us to rename properties like destructuring:
+```js
+const obj = {prop1: 42};
+
+const newObject = obj.{prop1:p1};
+newObject; // {p1: 42};
+
+obj; // {prop1: 42};
+```
+### extracting nested properties
+Dotstructuring syntax let us to extract nested properties like destructuring:
+```js
+const obj = {obj1: {prop1: 42}};
+
+const newObject = obj.{ obj1:{prop1} };
+newObject; // {prop1: 42};
+
+obj; // {obj1: {prop1: 42}};
+```
+
