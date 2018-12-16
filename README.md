@@ -82,4 +82,16 @@ newObject; // {prop1: 42};
 
 obj; // {obj1: {prop1: 42}};
 ```
-
+## Possible RHS access transpilation
+All the RHS object dotstructuring (symbols included) could already be transpiled:
+```js
+const object = {prop: .., [Symbol.iterator]: ..};
+const newObject = obj.{prop, [Symbol.iterator]};
+```
+into:
+```
+const object = {prop: .., [Symbol.iterator]: ..};
+const newObj = (function(obj){
+    var tmp = {};
+    return ({ prop1: tmp.prop1, [Symbol.iterator]: tmp[Symbol.iterator] } = obj, tmp);
+})(object);
