@@ -89,9 +89,11 @@ const object = {prop: .., [Symbol.iterator]: ..};
 const newObject = obj.{prop, [Symbol.iterator]};
 ```
 into:
-```
+```js
 const object = {prop: .., [Symbol.iterator]: ..};
 const newObj = (function(obj){
     var tmp = {};
     return ({ prop1: tmp.prop1, [Symbol.iterator]: tmp[Symbol.iterator] } = obj, tmp);
 })(object);
+```
+
