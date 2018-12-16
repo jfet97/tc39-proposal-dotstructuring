@@ -93,7 +93,7 @@ into:
 const object = {prop: .., [Symbol.iterator]: ..};
 const newObj = (function(obj){
     var tmp = {};
-    return ({ prop1: tmp.prop1, [Symbol.iterator]: tmp[Symbol.iterator] } = obj, tmp);
+    return ({ prop: tmp.prop, [Symbol.iterator]: tmp[Symbol.iterator] } = obj, tmp);
 })(object);
 ```
 
