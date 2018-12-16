@@ -111,7 +111,7 @@ const target = {prop1: 'bar', prop3: 'baz'};
 target.{prop1, prop2} = source;
 
 source; // {prop1: 42, prop2: 'foo'};
-target = {prop1: 42, prop2: 'foo', prop3: 'baz'};
+target; // {prop1: 42, prop2: 'foo', prop3: 'baz'};
 ```
 The source object remains unaffected.\
 The [[Prototype]] property is never copied.\
