@@ -213,3 +213,5 @@ Object.assign(target, (function(obj){
     return ({ prop: tmp.prop, [Symbol.iterator]: tmp[Symbol.iterator] } = obj, tmp);
 })(source));
 ```
+## Reasons
+Currently JavaScript syntax does not let us to pick one or more properties from an object to create a new one nor let us to merge only some chosen properties from an object to another. Object dotstructuring could be useful to easily create objects subsets and to merge/clone/replace chosen properties from an object to another. 
