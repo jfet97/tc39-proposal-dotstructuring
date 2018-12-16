@@ -214,4 +214,26 @@ Object.assign(target, (function(obj){
 })(source));
 ```
 ## Reasons
-Currently JavaScript syntax does not let us to pick one or more properties from an object to create a new one nor let us to merge only some chosen properties from an object to another. Object dotstructuring could be useful to easily create objects subsets and to merge/clone/replace chosen properties from an object to another. 
+Currently JavaScript syntax does not let us to pick one or more properties from an object to create a new one nor let us to merge only some chosen properties from an object to another. Object dotstructuring could be useful to easily create objects subsets and to merge/clone/replace chosen properties from an object to another.
+
+Bob Myers' [proposal](https://github.com/rtm/js-pick-notation) supports the following:\
+
+Expressiveness and brevity for the common use cases of picking properties from objects into existing or new objects are reached by the proposal.\
+Currently we have destructuring assignment, which provides a useful way to extract properties from objects. However, it is limited to assigning the values to variables. This proposal can be thought of as a natural extension to destructuring assignment, leveraging its syntax, to allow destructuring into properties of objects. It brings parity to the concept of destructuring.\
+Picking properties from an object is a common use case in today's JavaScript, but currently requires approaches such as
+
+```js
+const newObject = {prop1: object.prop1, prop2: object.prop2};
+
+or
+
+```js
+const {prop1, prop2} = object;
+const newObject = {prop1, prop2};
+```
+
+The use case for this feature can also be considered to be validated by the existence of the _\_.pick_ utilities available in several popular libraries. People in the real world also regularly wonder about the absence of native facilities for picking/destructuring from objects into objects, instead of just variables.
+
+It makes good sense to re-use the current dot notation, which programmers have used and loved for two decades. since what we are trying to do is in fact setting and retrieving object properties, the difference being that we are setting or retrieving more than one at a time.
+
+In that sense, this proposal can be viewed as bringing parity to both object destructuring, and dot notation, by allowing the existing destrucuturing concept to be applied uniformly in conjunction with dot notation.
