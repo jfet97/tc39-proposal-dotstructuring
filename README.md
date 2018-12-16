@@ -24,20 +24,21 @@ Considering that dotstructuring always involves two object, it has to be permitt
 
 ## RHS access (right-hand side)
 In this situation the object dotstructuring will:
-1. pick chosen properties 
+1. pick chosen properties from the source
 2. create a fresh new object 
-3. copying chosen props and values into the just created object (shallow copy)
+3. copy chosen props and their values into the just created object (shallow copy)
 4. return the just created object
 
 ```js
-const obj = {prop1: 42, prop2: 'foo', [Symbol.iterator]: .. };
+const source = {prop1: 42, prop2: 'foo', [Symbol.iterator]: .. };
 
-const newObject = obj.{prop1, [Symbol.iterator]};
+const newObject = source.{prop1, [Symbol.iterator]};
 newObject; // {prop1: 42,  [Symbol.iterator]: .. };
 
-obj; // {prop1: 42, prop2: 'foo', [Symbol.iterator]: .. };
+source; // {prop1: 42, prop2: 'foo', [Symbol.iterator]: .. };
 ```
-The source object remains unaffected.
+The source object remains unaffected.\
+The [[Prototype]] property is not copied.\
 &nbsp;
 ### undefined properties
 If a not existing property is picked the corrisponding value will be undefined:
@@ -96,4 +97,90 @@ const newObj = (function(obj){
     return ({ prop: tmp.prop, [Symbol.iterator]: tmp[Symbol.iterator] } = obj, tmp);
 })(object);
 ```
+## LHS access (left-hand side)
+In this situation the object dotstructuring will:
+1. pick chosen properties from the source
+2. select corresponding properties in the __already existing__ target object
+3. copy chosen props and their values into the target object (shallow copy), overwriting those already present in case of conflicts
+4. return the just updated object
 
+```js
+const source = {prop1: 42, prop2: 'foo'};
+const target = {prop1: 'bar', prop3: 'baz'};
+
+target.{prop1, prop2} = source;
+
+source; // {prop1: 42, prop2: 'foo'};
+target = {prop1: 42, prop2: 'foo', prop3: 'baz'};
+```
+The source object remains unaffected.\
+The [[Prototype]] property is never copied.\
+The _target_ must be an already existing object because if a fresh new one is needed with one or more properties picked by another object, the RHS access has to be used:
+```js
+const source = {prop1: 42, prop2: 'foo'};
+const target.{prop1, prop2} = source; // ERROR: LHS dotstructuring does not provide an implicit object creation
+```
+on the contrary, use this:
+```js
+const source = {prop1: 42, prop2: 'foo'};
+const target = source.{prop1, prop2}; //  RHS dotstructuring provides an implicit object creation
+```
+
+&nbsp;
+### undefined properties
+If a not existing property is picked the corrisponding value will be undefined:
+```js
+const obj = {prop1: 42};
+
+const newObject = obj.{prop2};
+newObject; // {prop2: undefined};
+
+obj; // {prop1: 42};
+```
+&nbsp;
+### default values for properties
+Dotstructuring syntax let us to set default value for properties like destructuring:
+```js
+const obj = {prop1: 42};
+
+const newObject = obj.{prop2 = 'foo'};
+newObject; // {prop2: 'foo'};
+
+obj; // {prop1: 42};
+```
+&nbsp;
+### renaming properties
+Dotstructuring syntax let us to rename properties like destructuring:
+```js
+const obj = {prop1: 42};
+
+const newObject = obj.{prop1:p1};
+newObject; // {p1: 42};
+
+obj; // {prop1: 42};
+```
+&nbsp;
+### extracting nested properties
+Dotstructuring syntax let us to extract nested properties like destructuring:
+```js
+const obj = {obj1: {prop1: 42}};
+
+const newObject = obj.{ obj1:{prop1} };
+newObject; // {prop1: 42};
+
+obj; // {obj1: {prop1: 42}};
+```
+## Possible RHS access transpilation
+All the RHS object dotstructuring (symbols included) could already be transpiled:
+```js
+const object = {prop: .., [Symbol.iterator]: ..};
+const newObject = obj.{prop, [Symbol.iterator]};
+```
+into:
+```js
+const object = {prop: .., [Symbol.iterator]: ..};
+const newObj = (function(obj){
+    var tmp = {};
+    return ({ prop: tmp.prop, [Symbol.iterator]: tmp[Symbol.iterator] } = obj, tmp);
+})(object);
+```
