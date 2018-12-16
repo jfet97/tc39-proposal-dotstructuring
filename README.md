@@ -224,6 +224,7 @@ Picking properties from an object is a common use case in today's JavaScript, bu
 
 ```js
 const newObject = {prop1: object.prop1, prop2: object.prop2};
+```
 
 or
 
