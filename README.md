@@ -216,7 +216,7 @@ Object.assign(target, (function(obj){
 ## Reasons
 Currently JavaScript syntax does not let us to pick one or more properties from an object to create a new one nor let us to merge only some chosen properties from an object to another. Object dotstructuring could be useful to easily create objects subsets and to merge/clone/replace chosen properties from an object to another.
 
-Bob Myers' [proposal](https://github.com/rtm/js-pick-notation) supports the following:\
+Bob Myers' [proposal](https://github.com/rtm/js-pick-notation) supports the following:
 
 Expressiveness and brevity for the common use cases of picking properties from objects into existing or new objects are reached by the proposal.\
 Currently we have destructuring assignment, which provides a useful way to extract properties from objects. However, it is limited to assigning the values to variables. This proposal can be thought of as a natural extension to destructuring assignment, leveraging its syntax, to allow destructuring into properties of objects. It brings parity to the concept of destructuring.\
