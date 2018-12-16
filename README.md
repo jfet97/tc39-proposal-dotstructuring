@@ -43,59 +43,59 @@ The [[Prototype]] property is not copied.\
 ### undefined properties
 If a not existing property is picked the corrisponding value will be undefined:
 ```js
-const obj = {prop1: 42};
+const source = {prop1: 42};
 
-const newObject = obj.{prop2};
+const newObject = source.{prop2};
 newObject; // {prop2: undefined};
 
-obj; // {prop1: 42};
+source; // {prop1: 42};
 ```
 &nbsp;
 ### default values for properties
 Dotstructuring syntax let us to set default value for properties like destructuring:
 ```js
-const obj = {prop1: 42};
+const source = {prop1: 42};
 
-const newObject = obj.{prop2 = 'foo'};
+const newObject = source.{prop2 = 'foo'};
 newObject; // {prop2: 'foo'};
 
-obj; // {prop1: 42};
+source; // {prop1: 42};
 ```
 &nbsp;
 ### renaming properties
 Dotstructuring syntax let us to rename properties like destructuring:
 ```js
-const obj = {prop1: 42};
+const source = {prop1: 42};
 
-const newObject = obj.{prop1:p1};
+const newObject = source.{prop1:p1};
 newObject; // {p1: 42};
 
-obj; // {prop1: 42};
+source; // {prop1: 42};
 ```
 &nbsp;
 ### extracting nested properties
 Dotstructuring syntax let us to extract nested properties like destructuring:
 ```js
-const obj = {obj1: {prop1: 42}};
+const source = {obj1: {prop1: 42}};
 
-const newObject = obj.{ obj1:{prop1} };
+const newObject = source.{ obj1:{prop1} };
 newObject; // {prop1: 42};
 
-obj; // {obj1: {prop1: 42}};
+source; // {obj1: {prop1: 42}};
 ```
 ## Possible RHS access transpilation
-All the RHS object dotstructuring (symbols included) could already be transpiled:
+All the RHS object dotstructuring (symbols included) cases could be transpiled:
 ```js
-const object = {prop: .., [Symbol.iterator]: ..};
-const newObject = obj.{prop, [Symbol.iterator]};
+const source = {prop: .., [Symbol.iterator]: ..};
+const newObject = source.{prop, [Symbol.iterator]};
 ```
 into:
 ```js
-const object = {prop: .., [Symbol.iterator]: ..};
+const source = {prop: .., [Symbol.iterator]: ..};
 const newObj = (function(obj){
     var tmp = {};
     return ({ prop: tmp.prop, [Symbol.iterator]: tmp[Symbol.iterator] } = obj, tmp);
-})(object);
+})(source);
 ```
 ## LHS access (left-hand side)
 In this situation the object dotstructuring will:
@@ -125,62 +125,91 @@ on the contrary, use this:
 const source = {prop1: 42, prop2: 'foo'};
 const target = source.{prop1, prop2}; //  RHS dotstructuring provides an implicit object creation
 ```
-
 &nbsp;
 ### undefined properties
-If a not existing property is picked the corrisponding value will be undefined:
+If a not existing property is picked the corrisponding value in the target will be undefined:
 ```js
-const obj = {prop1: 42};
+const source = {};
+const target = {};
 
-const newObject = obj.{prop2};
-newObject; // {prop2: undefined};
+target.{prop1} = source;
 
-obj; // {prop1: 42};
+source; // {}
+target; // {prop1:undefined}
+```
+&nbsp;
+If the property exists in the target but not in the source, that property inthe target will become undefined:
+```js
+const source = {};
+const target = {prop1:42};
+
+target.{prop1} = source;
+
+source; // {}
+target; // {prop1:undefined}
 ```
 &nbsp;
 ### default values for properties
 Dotstructuring syntax let us to set default value for properties like destructuring:
 ```js
-const obj = {prop1: 42};
+const source = {};
+const target = {};
 
-const newObject = obj.{prop2 = 'foo'};
-newObject; // {prop2: 'foo'};
+target.{prop1 = 42} = source;
 
-obj; // {prop1: 42};
+source; // {}
+target; // {prop1:42}
 ```
 &nbsp;
 ### renaming properties
 Dotstructuring syntax let us to rename properties like destructuring:
 ```js
-const obj = {prop1: 42};
+const source = {prop1:42};
+const target = {};
 
-const newObject = obj.{prop1:p1};
-newObject; // {p1: 42};
+target.{prop1:p1} = source;
 
-obj; // {prop1: 42};
+source; // {prop1:42}
+target; // {p1:42}
 ```
 &nbsp;
 ### extracting nested properties
 Dotstructuring syntax let us to extract nested properties like destructuring:
 ```js
-const obj = {obj1: {prop1: 42}};
+const source = {obj1: {prop1: 42}};
+const target = {};
 
-const newObject = obj.{ obj1:{prop1} };
-newObject; // {prop1: 42};
+target.{obj1:{prop1}} = source;
 
-obj; // {obj1: {prop1: 42}};
+target; // {prop1: 42};
+source; // {obj1: {prop1: 42}};
 ```
-## Possible RHS access transpilation
-All the RHS object dotstructuring (symbols included) could already be transpiled:
+### handling properties conflicts
+Target properties will be overwritten in case of conflicts:
 ```js
-const object = {prop: .., [Symbol.iterator]: ..};
-const newObject = obj.{prop, [Symbol.iterator]};
+const source = {prop1:42};
+const target = {prop1:'foo'};
+
+target.{prop1} = source;
+
+target; // {prop1: 42};
+source; // {prop1: 42};
+```
+## Possible LHS access transpilation
+All the LHS object dotstructuring (symbols included) cases could be transpiled:
+```js
+const source = {prop1: .., [Symbol.iterator]: ..};
+const target = {prop2: ..};
+
+target.{prop1, [Symbol.iterator]} = target;
 ```
 into:
 ```js
-const object = {prop: .., [Symbol.iterator]: ..};
-const newObj = (function(obj){
+const source = {prop1: .., [Symbol.iterator]: ..};
+const target = {prop2: ..};
+
+Object.assign(target, (function(obj){
     var tmp = {};
     return ({ prop: tmp.prop, [Symbol.iterator]: tmp[Symbol.iterator] } = obj, tmp);
-})(object);
+})(source));
 ```
