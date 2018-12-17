@@ -21,7 +21,7 @@ We have to rename it:
 const {[Symbol.iterator]:foo} = [];
 ```
 Considering that dotstructuring always involves two object, it has to be permitted __only for dotstructuring purposes__ to allow a complete selection of properties to copy.\
-Specifically "standalone" computed properties should be allowed.
+Specifically __"standalone" computed properties should be allowed__.
 
 ## RHS access (right-hand side)
 In this situation the object dotstructuring will:
