@@ -21,7 +21,7 @@ We have to rename it:
 const {[Symbol.iterator]:foo} = [];
 ```
 Considering that dotstructuring always involves two object, it has to be permitted __only for dotstructuring purposes__ to allow a complete selection of properties to copy.\
-Specifically __"standalone" computed properties should be allowed__ to enable dynamic dotstructuring:
+Specifically __"standalone" computed properties should be allowed__ to also enable dynamic dotstructuring:
 ```js
 const p = 'prop1';
 obj.{[p]};
