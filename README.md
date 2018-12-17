@@ -12,7 +12,7 @@ To access multiple properties from an object (sometimes referred to as "picking"
 obj.{prop1, prop2};
 ```
 Why we need a destructuring-like construct instead of a a destructuring construct (_ObjectAssignmentPattern_)?\
-Dotstructuring symbols is a particular case because in normal destructuring we cannot extract directly a Symbol, since it would not make any sense:
+Dotstructuring symbols is a particular case because in normal destructuring we cannot extract directly some special Symbols since it would not make any sense, like the following:
 ```js
 const {[Symbol.iterator]} = [];
 ```
