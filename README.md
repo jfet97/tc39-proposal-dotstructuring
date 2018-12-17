@@ -138,7 +138,7 @@ source; // {}
 target; // {prop1:undefined}
 ```
 &nbsp;
-If the property exists in the target but not in the source, that property inthe target will become undefined:
+If the property exists in the target but not in the source, that property in the target will become undefined:
 ```js
 const source = {};
 const target = {prop1:42};
